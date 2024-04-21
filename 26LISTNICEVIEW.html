@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Timezones and Current Time</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 20px;
+    }
+    
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin-top: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        color: #333;
+        text-transform: uppercase;
+        font-size: 14px;
+    }
+
+    td {
+        background-color: #fff;
+        color: #666;
+        font-size: 14px;
+    }
+
+    tr:nth-child(even) td {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover td {
+        background-color: #e9e9e9;
+    }
+
+    @media screen and (max-width: 600px) {
+        table {
+            border: 0;
+            box-shadow: none;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        th, td {
+            white-space: nowrap;
+            border-bottom: 1px solid #ddd;
+        }
+    }
+</style>
+</head>
+<body>
+
+<h1>Dynamic Timezones and Current Time</h1>
+
+<table id="dynamic-table">
+    <thead>
+        <tr>
+            <th>Opco Name</th>
+            <th>Time Zone</th>
+            <th>Current Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Table rows will be added dynamically using JavaScript -->
+    </tbody>
+</table>
+
+<script>
+    // Function to get current time in a specific timezone
+    function getCurrentTime(timezone) {
+        const currentTime = new Date().toLocaleString("en-US", {timeZone: timezone});
+        return currentTime;
+    }
+
+    // Data containing Opco names and corresponding timezones
+    const opcoData = [
+        { opco: "India (IN)", timezone: "Asia/Kolkata" },
+        { opco: "Haiti (HT)", timezone: "America/Port-au-Prince" },
+        { opco: "Panama (PA)", timezone: "America/Panama" },
+        { opco: "Jamaica (JM)", timezone: "America/Jamaica" },
+        { opco: "Bahama (BH)", timezone: "America/Nassau" },
+        { opco: "Saint Lucia (ST)", timezone: "America/St_Lucia" },
+        { opco: "Rwanda (RW)", timezone: "Africa/Kigali" },
+        { opco: "Nigeria (NG)", timezone: "Africa/Lagos" },
+        { opco: "Egypt (EG)", timezone: "Africa/Cairo" },
+        { opco: "New Zealand (NZ)", timezone: "Pacific/Auckland" },
+        { opco: "New Caledonia (NC)", timezone: "Pacific/Noumea" },
+        { opco: "Hungary (HU)", timezone: "Europe/Budapest" },
+        { opco: "Czech Republic (CZ)", timezone: "Europe/Prague" },
+        { opco: "Indonesia (ID)", timezone: "Asia/Jakarta" },
+        { opco: "Malaysia (MY)", timezone: "Asia/Kuala_Lumpur" },
+        { opco: "Singapore (SG)", timezone: "Asia/Singapore" },
+        { opco: "South Africa (ZA)", timezone: "Africa/Johannesburg" },
+        { opco: "Vietnam (VN)", timezone: "Asia/Ho_Chi_Minh" },
+        { opco: "Myanmar (MM)", timezone: "Asia/Yangon" },
+        { opco: "Mozambique (MZ)", timezone: "Africa/Maputo" },
+        { opco: "Greece (GR)", timezone: "Europe/Athens" },
+        { opco: "Ethiopia (ET)", timezone: "Africa/Addis_Ababa" },
+        { opco: "Cambodia (KH)", timezone: "Asia/Phnom_Penh" },
+        { opco: "La Reunion (RE)", timezone: "Indian/Reunion" },
+        { opco: "Hop (HOP)", timezone: "Asia/Hovd" },
+        // Add more opco-timezone pairs here
+    ];
+
+    // Function to dynamically create table rows with Opco Name, Time Zone, and Current Time
+    function createTableRows() {
+        const tbody = document.querySelector('#dynamic-table tbody');
+        tbody.innerHTML = ''; // Clear existing rows
+        opcoData.forEach(opco => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${opco.opco}</td>
+                <td>${opco.timezone}</td>
+                <td>${getCurrentTime(opco.timezone)}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // Call the function to create initial table rows
+    createTableRows();
+
+    // Refresh current time every second
+    setInterval(() => {
+        const tbody = document.querySelector('#dynamic-table tbody');
+        const rows = tbody.querySelectorAll('tr');
+        rows.forEach(row => {
+            const timezone = row.childNodes[3].innerText; // Assuming timezone is the third column
+            row.childNodes[5].innerText = getCurrentTime(timezone);
+        });
+    }, 1000);
+</script>
+
+</body>
+</html>
